@@ -22,7 +22,7 @@ class QMTClient:
             return {"error": str(e), "status_code": getattr(e.response, 'status_code', 500)}
 
     def get_holding(self, account='stock'):
-        return self._req('GET', f'/api/holding?account={account}')
+        return self._req('POST', f'/api/holding', json={"account": account})
 
     def get_total_money(self, account='stock'):
         return self._req('POST', f'/api/money/total', json={"account": account})
@@ -121,7 +121,7 @@ class QMTClient:
         """
         params = {"account": account}
         query = "&".join([f"{k}={v}"for k, v in params.items()])
-        return self._req('GET', f'/api/order/status?{query}')
+        return self._req('POST', f'/api/order/status', json=params)
 
     def cancel_all_orders(self, account='stock'):
         """
